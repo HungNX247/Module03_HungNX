@@ -3,8 +3,8 @@ create database students_db;
 use students_db;
 
 create table Class(
-id int,
-name varchar(100));
+id int not null,
+name varchar(100) not null);
 
 create table Teacher(
 id int,
