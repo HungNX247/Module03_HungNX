@@ -78,13 +78,42 @@ insert into Mark (SubID, StudentID, Mark, ExamTimes) values
 (1, 2, 10, 2),
 (2, 1, 12, 1);
 
-select * from student;
-select * from class;
-select * from subject;
-select * from Mark;
+SELECT 
+    *
+FROM
+    student;
+SELECT 
+    *
+FROM
+    class;
+SELECT 
+    *
+FROM
+    subject;
+SELECT 
+    *
+FROM
+    Mark;
 
-select * from student where status = true;
-select * from subject where Credit < 10;
+UPDATE class 
+SET 
+    StartDate = '2025-10-07'
+WHERE
+    ClassID = 2;
+
+
+SELECT 
+    *
+FROM
+    student
+WHERE
+    status = TRUE;
+SELECT 
+    *
+FROM
+    subject
+WHERE
+    Credit < 10;
 
 SELECT 
     S.StudentID, S.StudentName, C.ClassName
@@ -105,6 +134,47 @@ FROM
     subject Sub ON M.SubID = Sub.SubID
 WHERE
     Sub.SubName = 'CF';
+    
+SELECT 
+    *
+FROM
+    student;
+    
+SELECT 
+    *
+FROM
+    student
+WHERE
+    LOWER(StudentName) LIKE 'h%';
 
+SELECT 
+    *
+FROM
+    class
+WHERE
+    MONTH(StartDate) = 12;
 
+SELECT 
+    *
+FROM
+    subject
+WHERE
+    (Credit >= 3 AND Credit <= 5);
 
+UPDATE student 
+SET 
+    ClassID = 2
+WHERE
+    StudentName = 'Hung';
+
+SELECT 
+    s.StudentName AS studentname,
+    sub.SubName AS subname,
+    m.mark AS mark
+FROM
+    mark m
+        JOIN
+    student s ON m.StudentID = s.StudentID
+        JOIN
+    subject sub ON m.SubID = sub.SubID
+ORDER BY m.Mark DESC , s.StudentName ASC;
