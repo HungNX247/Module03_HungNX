@@ -181,6 +181,7 @@ ORDER BY m.Mark DESC , s.StudentName ASC;
 
 select * from mark;
 select * from student;
+select * from subject;
 
 select Address, count(StudentID) as 'Số lượng học viên' from student group by Address;
 
@@ -195,3 +196,13 @@ select S.StudentID, S.StudentName, avg(mark) from student S
 join mark M on S.StudentID = M.StudentID 
 group by S.StudentID, S.StudentName 
 having avg(mark) >= all (select avg(mark) from mark group by mark.StudentID);
+
+select Subname, max(Credit) as 'Số lượng học phần' from subject group by Subname;
+
+select sub.SubID as id, sub.SubName, max(mark) from subject sub 
+join mark M on sub.SubID = M.SubID 
+group by sub.SubID, sub.Subname;
+
+select S.StudentID, S.StudentName, avg(mark) from student S 
+join mark M on S.StudentID = M.StudentID group by S.StudentID, S.StudentName 
+order by avg(mark) desc;
