@@ -78,6 +78,12 @@ insert into Mark (SubID, StudentID, Mark, ExamTimes) values
 (1, 2, 10, 2),
 (2, 1, 12, 1);
 
+insert into Mark (SubID, StudentID, Mark, ExamTimes) values 
+(4, 3, 7, 1),
+(3, 2, 9, 2),
+(2, 3, 10, 1),
+(4, 1, 9, 1);
+
 SELECT 
     *
 FROM
