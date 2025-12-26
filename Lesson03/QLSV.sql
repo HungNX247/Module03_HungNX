@@ -188,27 +188,60 @@ ORDER BY m.Mark DESC , s.StudentName ASC;
 select * from mark;
 select * from student;
 select * from subject;
+select * from class;
 
-select Address, count(StudentID) as 'Số lượng học viên' from student group by Address;
+SELECT 
+    Address, COUNT(StudentID) AS 'Số lượng học viên'
+FROM
+    student
+GROUP BY Address;
 
-select S.StudentID, S.StudentName, avg(mark) from student S 
-join mark M on S.StudentID = M.StudentID group by S.StudentID, S.StudentName;
+SELECT 
+    S.StudentID, S.StudentName, AVG(mark)
+FROM
+    student S
+        JOIN
+    mark M ON S.StudentID = M.StudentID
+GROUP BY S.StudentID , S.StudentName;
 
-select S.StudentID, S.StudentName, avg(mark) from student S 
-join mark M on S.StudentID = M.StudentID 
-group by S.StudentID, S.StudentName having avg(mark) > 15;
+SELECT 
+    S.StudentID, S.StudentName, AVG(mark)
+FROM
+    student S
+        JOIN
+    mark M ON S.StudentID = M.StudentID
+GROUP BY S.StudentID , S.StudentName
+HAVING AVG(mark) > 15;
 
-select S.StudentID, S.StudentName, avg(mark) from student S 
-join mark M on S.StudentID = M.StudentID 
-group by S.StudentID, S.StudentName 
-having avg(mark) >= all (select avg(mark) from mark group by mark.StudentID);
+SELECT 
+    S.StudentID, S.StudentName, AVG(mark)
+FROM
+    student S
+        JOIN
+    mark M ON S.StudentID = M.StudentID
+GROUP BY S.StudentID , S.StudentName
+HAVING AVG(mark) >= ALL (SELECT 
+        AVG(mark)
+    FROM
+        mark
+    GROUP BY mark.StudentID);
 
-select Subname, max(Credit) as 'Số lượng học phần' from subject group by Subname;
+select Subname, max(Credit) as 'Số lượng học phần' from subject 
+group by Subname;
 
-select sub.SubID as id, sub.SubName, max(mark) from subject sub 
-join mark M on sub.SubID = M.SubID 
-group by sub.SubID, sub.Subname;
+SELECT 
+    sub.SubID AS id, sub.SubName, MAX(mark)
+FROM
+    subject sub
+        JOIN
+    mark M ON sub.SubID = M.SubID
+GROUP BY sub.SubID , sub.Subname;
 
-select S.StudentID, S.StudentName, avg(mark) from student S 
-join mark M on S.StudentID = M.StudentID group by S.StudentID, S.StudentName 
-order by avg(mark) desc;
+SELECT 
+    S.StudentID, S.StudentName, AVG(mark)
+FROM
+    student S
+        JOIN
+    mark M ON S.StudentID = M.StudentID
+GROUP BY S.StudentID , S.StudentName
+ORDER BY AVG(mark) DESC;
