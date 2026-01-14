@@ -2,34 +2,53 @@ create database QLBH03;
 
 use QLBH03;
 
-create table customer (
-cID int auto_increment primary key,
-cName varchar(50) not null,
-cAge int check (cAge > 0));
+CREATE TABLE customer (
+    cID INT AUTO_INCREMENT PRIMARY KEY,
+    cName VARCHAR(50) NOT NULL,
+    cAge INT CHECK (cAge > 0)
+);
 
-create table `Order` (
-oID int auto_increment primary key,
-cID int not null,
-oDate date not null,
-oTotalPrice decimal(10,2),
-foreign key (cID) references customer(cID));
+CREATE TABLE `Order` (
+    oID INT AUTO_INCREMENT PRIMARY KEY,
+    cID INT NOT NULL,
+    oDate DATE NOT NULL,
+    oTotalPrice DECIMAL(10 , 2 ),
+    FOREIGN KEY (cID)
+        REFERENCES customer (cID)
+);
 
-create table Product (
-pID int auto_increment primary key,
-pName varchar(50) not null,
-pPrice decimal(10,2) not null check (pPrice >= 0));
+CREATE TABLE Product (
+    pID INT AUTO_INCREMENT PRIMARY KEY,
+    pName VARCHAR(50) NOT NULL,
+    pPrice DECIMAL(10 , 2 ) NOT NULL CHECK (pPrice >= 0)
+);
 
-create table OderDetail (
-oID int not null,
-pID int not null,
-odQTY int not null check (odQTY > 0),
-foreign key (oID) references `Order`(oID),
-foreign key (pID) references Product(pID));
+CREATE TABLE OderDetail (
+    oID INT NOT NULL,
+    pID INT NOT NULL,
+    odQTY INT NOT NULL CHECK (odQTY > 0),
+    FOREIGN KEY (oID)
+        REFERENCES `Order` (oID),
+    FOREIGN KEY (pID)
+        REFERENCES Product (pID)
+);
 
-select * from customer;
-select * from `Order`;
-select * from Product;
-select * from OderDetail;
+SELECT 
+    *
+FROM
+    customer;
+SELECT 
+    *
+FROM
+    `Order`;
+SELECT 
+    *
+FROM
+    Product;
+SELECT 
+    *
+FROM
+    OderDetail;
 
 insert into customer (cName, cAge) values 
 ('Minh Quan', 10),
@@ -57,16 +76,37 @@ insert into OderDetail (oID, pID, odQTY) values
 (2,5,4),
 (2,3,3);
 
-select oID, oDate, oTotalPrice from `order`;
+SELECT 
+    oID, oDate, oTotalPrice
+FROM
+    `order`;
 
-select distinct c.cID, c.cName as CustomerName, p.pName as ProductName from customer c 
-join`order` o on c.cID = o.cID 
-join oderdetail od on o.oID = od.oID 
-join product p on od.pID = p.pID;
+SELECT DISTINCT
+    c.cID, c.cName AS CustomerName, p.pName AS ProductName
+FROM
+    customer c
+        JOIN
+    `order` o ON c.cID = o.cID
+        JOIN
+    oderdetail od ON o.oID = od.oID
+        JOIN
+    product p ON od.pID = p.pID;
 
-select c.cID, c.cName from customer c left join `order` o on c.cID = o.cID where o.cID is null;
+SELECT 
+    c.cID, c.cName
+FROM
+    customer c
+        LEFT JOIN
+    `order` o ON c.cID = o.cID
+WHERE
+    o.cID IS NULL;
 
-select o.oID, o.oDate, sum(od.odQTY * p.pPrice) as TotalPrice from `order` o 
-join oderdetail od on o.oID = od.oID 
-join product p on od.pID = p.pID 
-group by o.oID, o.oDate;
+SELECT 
+    o.oID, o.oDate, SUM(od.odQTY * p.pPrice) AS TotalPrice
+FROM
+    `order` o
+        JOIN
+    oderdetail od ON o.oID = od.oID
+        JOIN
+    product p ON od.pID = p.pID
+GROUP BY o.oID , o.oDate;
