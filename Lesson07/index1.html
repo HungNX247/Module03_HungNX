@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 1. Tạo thẻ HTML -->
+     <div></div> <!--"div + tab"-->
+     <p></p>  <!--"p + tab"-->
+     <h1></h1>  <!--"h1 + tab"-->
+     <ul></ul>  <!--"ul + tab"-->
+     <li></li> <!--"li + tab"-->
+
+     <!-- 2. Class & ID -->
+      <div class="box"></div>  <!--".box"-->
+      <div id="header"></div>  <!--"#header"-->
+      <div class="box"></div>  <!--"div.box"-->
+      <div id="main"></div> <!--div#main-->
+      <div class="box red"></div>  <!--div.box.red-->
+
+      <!--3. Nội dung Text {} -->
+      <p>Hello</p> <!--p{Hello}-->
+      <div class="box">Content</div> <!--div.box{Content}-->
+      <a href="">Click me</a>
+
+      <!-- 4. THUỘC TÍNH [] -->
+       <a href="#"></a> <!-- a[href=#] -->
+       <img src="img.png" alt=""> <!-- img[src=img.png] -->
+       <input type="text"> <!-- input[type=text] -->
+
+       <!-- 5. Quan hệ cha con -->
+        <!-- 5.1: Con > (ul>li) -->
+        <ul>
+            <li></li>
+        </ul>
+
+        <!--5.2: Anh em + (h1+p) -->
+        <h1></h1>
+        <p></p>
+
+        <!-- 6. Nhân bản * (li*3) -->
+         <li></li>
+         <li></li>
+         <li></li>
+
+         <!-- 7. Đánh số tự động $ (li.item$*3)-->
+          <li class="item1"></li>
+          <li class="item2"></li>
+          <li class="item3"></li>
+
+          <!--p{Item $}*3-->
+          <p>Item 1</p>
+          <p>Item 2</p>
+          <p>Item 3</p>
+
+        <!-- 8. Nhóm () ==> (div>(h1+p)*2)-->
+         <div>
+            <h1></h1>
+            <p></p>
+            <h1></h1>
+            <p></p>
+         </div>
+</body>
+</html>
