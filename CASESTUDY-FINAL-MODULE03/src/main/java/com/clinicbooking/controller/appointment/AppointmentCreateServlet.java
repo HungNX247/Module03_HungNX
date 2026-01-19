@@ -1,5 +1,6 @@
 package com.clinicbooking.controller.appointment;
 
+import com.clinicbooking.dto.UserDto;
 import com.clinicbooking.model.entity.Appointment;
 import com.clinicbooking.model.entity.User;
 import com.clinicbooking.service.AppointmentService;
@@ -29,28 +30,47 @@ public class AppointmentCreateServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(false);
-        User user = (User) session.getAttribute("user");
+        if (session == null || session.getAttribute("user") == null) {
+            resp.sendRedirect(req.getContextPath() + "/login");
+            return;
+        }
+        UserDto user = (UserDto) session.getAttribute("user");
 
         int doctorId = Integer.parseInt(req.getParameter("doctorId"));
         String dateStr = req.getParameter("date");
         String timeStr = req.getParameter("time");
         String note = req.getParameter("note");
 
-        Appointment appointment = new Appointment();
-        appointment.setPatientId(user.getId());
-        appointment.setDoctorId(doctorId);
-        appointment.setAppointmentDate(Date.valueOf(dateStr));
-        appointment.setAppointmentTime(Time.valueOf(timeStr + ":00"));
-        appointment.setNote(note);
-
-        boolean ok = appointmentService.create(appointment);
-
-        if (!ok) {
-            req.setAttribute("error","Slot này đã có người đặt. Chọn giờ khác nha!");
-            req.setAttribute("doctors",doctorService.findAll());
-            req.getRequestDispatcher("/WEB-INF/views/appointment/create.jsp").forward(req,resp);
+        if (dateStr == null || timeStr == null  || dateStr.isEmpty() || timeStr.isEmpty()) {
+            req.setAttribute("error", "Vui lòng nhập đầy đủ thông tin lịch hẹn!");
+            req.setAttribute("doctors", doctorService.findAll());
+            req.getRequestDispatcher("/WEB-INF/views/appointment/create.jsp").forward(req, resp);
             return;
         }
-        resp.sendRedirect(req.getContextPath() + "/appointments");
+        try {
+
+            Appointment appointment = new Appointment();
+            appointment.setPatientId(user.getId());
+            appointment.setDoctorId(doctorId);
+            appointment.setAppointmentDate(Date.valueOf(dateStr));
+            appointment.setAppointmentTime(Time.valueOf(timeStr + ":00"));
+            appointment.setNote(note);
+
+            boolean ok = appointmentService.create(appointment);
+
+            if (!ok) {
+                req.setAttribute("error", "Slot này đã có người đặt. Chọn giờ khác nha!");
+                req.setAttribute("doctors", doctorService.findAll());
+                req.getRequestDispatcher("/WEB-INF/views/appointment/create.jsp").forward(req, resp);
+                return;
+            }
+            resp.sendRedirect(req.getContextPath() + "/appointments");
+
+        } catch (ServletException e) {
+            e.printStackTrace();
+            req.setAttribute("error", "Dữ liệu không hợp lệ! Vui lòng kiểm tra lại.");
+            req.setAttribute("doctors", doctorService.findAll());
+            req.getRequestDispatcher("/WEB-INF/views/appointment/create.jsp").forward(req, resp);
+        }
     }
 }

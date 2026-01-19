@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -10,10 +11,10 @@
 
     <title>Danh sách bác sĩ - Clinic Booking</title>
 
-    <!-- SB Admin styles -->
+
     <link href="${pageContext.request.contextPath}/assets/css/styles.css" rel="stylesheet" />
 
-    <!-- FontAwesome -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"
             crossorigin="anonymous"></script>
 
@@ -50,9 +51,9 @@
                                 <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Tên</th>
-                                    <th>Specialty ID</th>
-                                    <th>SĐT</th>
+                                    <th>Tên bác sĩ</th>
+                                    <th>Chuyên nghành</th>
+                                    <th>Số điện thoại</th>
                                     <th>Giá khám</th>
                                 </tr>
                                 </thead>
@@ -71,9 +72,11 @@
                                             <tr>
                                                 <td>${d.id}</td>
                                                 <td>${d.fullName}</td>
-                                                <td>${d.specialtyId}</td>
+                                                <td>${d.specialtyName}</td>
                                                 <td>${d.phone}</td>
-                                                <td>${d.price}</td>
+                                                <td>
+                                                    <fmt:formatNumber value="${d.price}" type="number" groupingUsed="true" /> VNĐ
+                                                </td>
                                             </tr>
                                         </c:forEach>
                                     </c:otherwise>

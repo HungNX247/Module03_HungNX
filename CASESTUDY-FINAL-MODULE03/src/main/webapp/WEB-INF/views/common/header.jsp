@@ -49,6 +49,17 @@
             </a>
         </li>
 
+        <c:if test="${sessionScope.user != null && sessionScope.user.role != null
+             && sessionScope.user.role.equalsIgnoreCase('ADMIN')}">
+            <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/admin/appointments">
+                    <i class="fas fa-calendar-alt"></i> Quản lý lịch hẹn
+                </a>
+            </li>
+        </c:if>
+
+
+
         <li class="nav-item">
             <a class="nav-link" href="${pageContext.request.contextPath}/appointments/create">
                 <i class="fas fa-plus-circle"></i> Đặt lịch

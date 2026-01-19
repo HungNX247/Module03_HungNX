@@ -30,6 +30,7 @@ public class DoctorDao {
                 doctorDto.setId(resultSet.getInt("id"));
                 doctorDto.setFullName(resultSet.getString("full_name"));
                 doctorDto.setSpecialtyId(resultSet.getInt("specialty_id"));
+                doctorDto.setSpecialtyName(resultSet.getString("specialty_name"));
                 doctorDto.setPhone(resultSet.getString("phone"));
                 doctorDto.setPrice(resultSet.getInt("price"));
                 list.add(doctorDto);

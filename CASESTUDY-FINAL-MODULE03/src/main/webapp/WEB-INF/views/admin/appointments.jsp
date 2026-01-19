@@ -5,30 +5,32 @@
 
 <main>
     <div class="container-fluid px-4">
+        <h1 class="mt-4">Quản lý lịch khám</h1>
 
-        <h1 class="mt-4">Lịch khám của tôi</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item">
-                <a href="${pageContext.request.contextPath}/doctors">Bác sĩ</a>
-            </li>
-            <li class="breadcrumb-item active">Lịch khám của tôi</li>
-        </ol>
+        <div class="mb-3">
+            <a class="btn btn-primary" href="${pageContext.request.contextPath}/admin/appointments/create">
+                <i class="fas fa-plus-circle"></i> Đặt lịch cho bệnh nhân
+            </a>
+        </div>
 
         <div class="card shadow-sm mb-4">
             <div class="card-header">
                 <i class="fas fa-calendar-alt"></i>
-                Danh sách lịch hẹn
+                Danh sách lịch hẹn (Admin)
             </div>
 
             <div class="card-body">
 
+                <c:if test="${not empty success}">
+                    <div class="alert alert-success">
+                            ${success}
+                    </div>
+                </c:if>
+
+
                 <c:if test="${empty appointments}">
-                    <div class="alert alert-info" role="alert">
-                        <i class="fas fa-info-circle"></i>
-                        Bạn chưa có lịch hẹn nào.
-                        <a href="${pageContext.request.contextPath}/appointments/create" class="alert-link">
-                            Đặt lịch ngay
-                        </a>
+                    <div class="alert alert-info">
+                        Chưa có lịch hẹn nào.
                     </div>
                 </c:if>
 
@@ -37,14 +39,15 @@
                         <table class="table table-bordered table-hover align-middle">
                             <thead class="table-light">
                             <tr>
-                                <th style="width: 70px;">ID</th>
-                                <th style="width: 220px;">Bác sĩ</th>
-                                <th style="width: 160px;">Chuyên ngành</th>
-                                <th style="width: 140px;">Ngày</th>
-                                <th style="width: 120px;">Giờ</th>
-                                <th style="width: 130px;">Trạng thái</th>
+                                <th>ID</th>
+                                <th>Bệnh nhân</th>
+                                <th>SĐT</th>
+                                <th>Bác sĩ</th>
+                                <th>Chuyên ngành</th>
+                                <th>Ngày</th>
+                                <th>Giờ</th>
+                                <th>Trạng thái</th>
                                 <th>Ghi chú</th>
-                                <th style="width: 120px;">Hành động</th>
                             </tr>
                             </thead>
 
@@ -52,6 +55,8 @@
                             <c:forEach var="ap" items="${appointments}">
                                 <tr>
                                     <td>${ap.id}</td>
+                                    <td>${ap.patientName}</td>
+                                    <td>${ap.patientPhone}</td>
                                     <td>${ap.doctorName}</td>
                                     <td>${ap.specialtyName}</td>
                                     <td>${ap.appointmentDate}</td>
@@ -74,38 +79,16 @@
                                     <td>
                                         <c:out value="${ap.note}" default="(Không có)"/>
                                     </td>
-
-                                    <td>
-                                        <c:if test="${ap.status == 'BOOKED'}">
-                                            <form method="post"
-                                                  action="${pageContext.request.contextPath}/appointments/cancel"
-                                                  style="margin: 0;">
-                                                <input type="hidden" name="id" value="${ap.id}">
-                                                <button type="submit" class="btn btn-sm btn-outline-danger"
-                                                        onclick="return confirm('Bạn chắc chắn muốn huỷ lịch hẹn này?');">
-                                                    <i class="fas fa-times"></i> Huỷ
-                                                </button>
-                                            </form>
-                                        </c:if>
-
-                                        <c:if test="${ap.status != 'BOOKED'}">
-                                            <span class="text-muted">—</span>
-                                        </c:if>
-                                    </td>
                                 </tr>
                             </c:forEach>
                             </tbody>
+
                         </table>
                     </div>
                 </c:if>
 
             </div>
         </div>
-
-        <a class="btn btn-primary" href="${pageContext.request.contextPath}/appointments/create">
-            <i class="fas fa-plus-circle"></i> Đặt lịch mới
-        </a>
-
     </div>
 </main>
 

@@ -1,6 +1,7 @@
 package com.clinicbooking.service;
 
 import com.clinicbooking.dao.AppointmentDao;
+import com.clinicbooking.dto.AppointmentDto;
 import com.clinicbooking.model.entity.Appointment;
 
 import java.util.List;
@@ -12,8 +13,12 @@ public class AppointmentService {
         return appointmentDao.create(appointment);
     }
 
-    public List<Appointment> findByPatient(int patientId) {
+    public List<AppointmentDto> findByPatient(int patientId) {
         return appointmentDao.findByPatientId(patientId);
+    }
+
+    public List<AppointmentDto> findAllDto() {
+        return appointmentDao.findAllDto();
     }
 
     public boolean cancel(int appointmentId, int patientId) {

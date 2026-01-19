@@ -1,5 +1,6 @@
 package com.clinicbooking.filter;
 
+import com.clinicbooking.dto.UserDto;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,6 +39,15 @@ public class AuthFilter implements Filter {
         if (!logged) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
+        }
+
+        if (path.startsWith(request.getContextPath() + "/admin")) {
+            UserDto user = (UserDto) session.getAttribute("user");
+
+            if (user.getRole() == null || !user.getRole().equalsIgnoreCase("ADMIN")) {
+                response.sendRedirect(request.getContextPath() + "/doctors");
+                return;
+            }
         }
 
         filterChain.doFilter(request,response);

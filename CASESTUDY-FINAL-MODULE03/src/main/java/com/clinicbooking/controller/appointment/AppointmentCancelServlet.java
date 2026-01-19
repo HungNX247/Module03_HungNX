@@ -1,5 +1,6 @@
 package com.clinicbooking.controller.appointment;
 
+import com.clinicbooking.dto.UserDto;
 import com.clinicbooking.model.entity.User;
 import com.clinicbooking.service.AppointmentService;
 import jakarta.servlet.ServletException;
@@ -18,7 +19,7 @@ public class AppointmentCancelServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(false);
-        User user = (User) session.getAttribute("user");
+        UserDto user = (UserDto) session.getAttribute("user");
 
         int id = Integer.parseInt(req.getParameter("id"));
         appointmentService.cancel(id,user.getId());

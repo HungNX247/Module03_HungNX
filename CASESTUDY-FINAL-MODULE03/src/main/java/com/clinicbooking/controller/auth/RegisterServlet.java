@@ -25,6 +25,7 @@ public class RegisterServlet extends HttpServlet {
         String fullName = req.getParameter("fullName");
         String phone = req.getParameter("phone");
         String password = req.getParameter("password");
+        String confirmPassword = req.getParameter("confirmPassword");
 
         if (fullName != null) {
             fullName = fullName.trim();
@@ -38,8 +39,25 @@ public class RegisterServlet extends HttpServlet {
         }
         req.setAttribute("phone",phone);
 
+        if (password != null) {
+            password = password.trim();
+            if (password.isEmpty()) password = null;
+        }
+
+        if (confirmPassword != null) {
+            confirmPassword = confirmPassword.trim();
+            if (confirmPassword.isEmpty()) confirmPassword = null;
+        }
+
+
         if (fullName == null || phone == null || password == null) {
             req.setAttribute("error", "Vui lòng nhập đầy đủ thông tin!");
+            req.getRequestDispatcher("/WEB-INF/views/auth/register.jsp").forward(req, resp);
+            return;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            req.setAttribute("error", "Mật khẩu nhập lại không khớp!");
             req.getRequestDispatcher("/WEB-INF/views/auth/register.jsp").forward(req, resp);
             return;
         }

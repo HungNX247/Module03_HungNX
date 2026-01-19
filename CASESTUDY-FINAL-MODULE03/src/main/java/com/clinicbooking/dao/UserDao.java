@@ -1,13 +1,43 @@
 package com.clinicbooking.dao;
 
 import com.clinicbooking.config.DBConnection;
+import com.clinicbooking.dto.UserDto;
 import com.clinicbooking.model.entity.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDao {
+    public  List<UserDto> findAllPatients() {
+        List<UserDto> list = new ArrayList<>();
+
+        String sql = """
+                SELECT id, full_name, phone, role
+                FROM users
+                WHERE role = 'PATIENT'
+                ORDER BY id DESC""";
+
+        try(
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery();
+                ) {
+            while (rs.next()) {
+                UserDto userDto = new UserDto();
+                userDto.setId(rs.getInt("id"));
+                userDto.setFullName(rs.getString("full_name"));
+                userDto.setPhone(rs.getString("phone"));
+                userDto.setRole(rs.getString("role"));
+                list.add(userDto);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("UserDao.findAllPatients error", e);
+        }
+        return list;
+    }
     public User findByPhone(String phone) {
         String sql = "SELECT * FROM users WHERE phone = ?";
 

@@ -1,5 +1,7 @@
 package com.clinicbooking.controller.auth;
 
+import com.clinicbooking.dto.UserDto;
+import com.clinicbooking.mapper.UserMapper;
 import com.clinicbooking.model.entity.User;
 import com.clinicbooking.service.AuthService;
 import com.clinicbooking.util.ValidationUtil;
@@ -46,8 +48,9 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
+        UserDto userDto = UserMapper.toUserDto(user);
         HttpSession session = req.getSession(true);
-        session.setAttribute("user", user);
+        session.setAttribute("user",userDto);
 
         resp.sendRedirect(req.getContextPath() + "/doctors");
     }
