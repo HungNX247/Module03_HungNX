@@ -4,7 +4,7 @@ package com.clinicbooking.util;
 public class ValidationUtil {
     public static boolean isValidVietnamPhone(String phone) {
         if (phone == null) return false;
-        return phone.matches("^0\\d{9}$");
+        return phone.matches("^(0[3|5|7|8|9])[0-9]{8}$");
     }
 
     public static boolean isValidPassword(String password) {

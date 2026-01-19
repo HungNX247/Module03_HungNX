@@ -38,6 +38,35 @@ public class UserDao {
         }
         return list;
     }
+
+    public User findById(int id) {
+    String sql = "SELECT id, full_name, phone, password_hash, role, created_at FROM users WHERE id = ?";
+    try(
+            Connection connection = DBConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ) {
+        preparedStatement.setInt(1, id);
+
+        try(ResultSet resultSet = preparedStatement.executeQuery()) {
+            if (resultSet.next()) {
+                User user = new User();
+
+                user.setId(resultSet.getInt("id"));
+                user.setFullName(resultSet.getString("full_name"));
+                user.setPhone(resultSet.getString("phone"));
+                user.setPasswordHash(resultSet.getString("password_hash"));
+                user.setRole(resultSet.getString("role"));
+
+                return user;
+            }
+        }
+
+    } catch (Exception e) {
+        throw new RuntimeException("UserDao.findById error", e);
+    }
+        return null;
+    }
+
     public User findByPhone(String phone) {
         String sql = "SELECT * FROM users WHERE phone = ?";
 
@@ -64,6 +93,23 @@ public class UserDao {
         }
 
         return null;
+    }
+
+    public boolean updatePasswordHash(int userId, String newHash) {
+        String sql = "UPDATE users SET password_hash = ? WHERE id = ?";
+
+        try(
+                Connection connection = DBConnection.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                ) {
+            preparedStatement.setString(1,newHash);
+            preparedStatement.setInt(2, userId);
+
+            return preparedStatement.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            throw new RuntimeException("UserDao.updatePasswordHash error", e);
+        }
     }
 
     public boolean register(String fullName, String phone, String passwordHash) {

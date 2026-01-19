@@ -66,6 +66,17 @@
             </a>
         </li>
 
+        <c:if test="${not empty sessionScope.user}">
+            <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/change-password">
+                    <i class="fas fa-key"></i> Đổi mật khẩu
+                </a>
+            </li>
+        </c:if>
+
+
+
+
         <li class="nav-item">
             <a class="nav-link text-danger"
                href="${pageContext.request.contextPath}/logout"
