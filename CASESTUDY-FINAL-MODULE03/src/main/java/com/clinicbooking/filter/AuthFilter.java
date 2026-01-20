@@ -41,13 +41,20 @@ public class AuthFilter implements Filter {
             return;
         }
 
-        if (path.startsWith(request.getContextPath() + "/admin")) {
-            UserDto user = (UserDto) session.getAttribute("user");
+        UserDto user = (UserDto) session.getAttribute("user");
+        boolean isAdmin = user != null
+                && user.getRole() != null
+                && user.getRole().equalsIgnoreCase("ADMIN");
 
-            if (user.getRole() == null || !user.getRole().equalsIgnoreCase("ADMIN")) {
-                response.sendRedirect(request.getContextPath() + "/doctors");
-                return;
-            }
+        if (isAdmin && !path.startsWith(request.getContextPath() + "/admin")) {
+            response.sendRedirect(request.getContextPath() + "/admin/appointments");
+            return;
+        }
+
+
+        if (path.startsWith(request.getContextPath() + "/admin") && !isAdmin) {
+            response.sendRedirect(request.getContextPath() + "/doctors");
+            return;
         }
 
         filterChain.doFilter(request,response);
