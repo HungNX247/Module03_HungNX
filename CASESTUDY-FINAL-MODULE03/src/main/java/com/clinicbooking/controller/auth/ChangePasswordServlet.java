@@ -1,8 +1,8 @@
 package com.clinicbooking.controller.auth;
 
 import com.clinicbooking.dto.UserDto;
-import com.clinicbooking.model.entity.User;
 import com.clinicbooking.service.UserService;
+import com.clinicbooking.util.ValidationUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -36,19 +36,23 @@ public class ChangePasswordServlet extends HttpServlet {
         String newPassword = req.getParameter("newPassword");
         String confirmPassword = req.getParameter("confirmPassword");
 
+        currentPassword = (currentPassword == null) ? "" : currentPassword.trim();
+        newPassword = (newPassword == null) ? "" : newPassword.trim();
+        confirmPassword = (confirmPassword == null) ? "" : confirmPassword.trim();
+
         boolean hasError = false;
 
-        if (currentPassword == null || currentPassword.isBlank()) {
+        if (currentPassword.isBlank()) {
             req.setAttribute("currentPasswordError", "Vui lòng nhập mật khẩu hiện tại!");
             hasError = true;
         }
 
-        if (newPassword == null || newPassword.isBlank()) {
+        if (newPassword.isBlank()) {
             req.setAttribute("newPasswordError", "Vui lòng nhập mật khẩu mới!");
             hasError = true;
         }
 
-        if (confirmPassword == null || confirmPassword.isBlank()) {
+        if (confirmPassword.isBlank()) {
             req.setAttribute("confirmPasswordError", "Vui lòng nhập lại mật khẩu mới!");
             hasError = true;
         }
@@ -64,7 +68,7 @@ public class ChangePasswordServlet extends HttpServlet {
             return;
         }
 
-        if (newPassword.length() < 6) {
+        if (ValidationUtil.isValidPassword(newPassword)) {
             req.setAttribute("error", "Mật khẩu mới phải từ 6 ký tự trở lên!");
             doGet(req,resp);
             return;

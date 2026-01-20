@@ -35,12 +35,12 @@ public class LoginServlet extends HttpServlet {
 
         boolean hasError = false;
 
-        if (phone == null) {
+        if (phone.isBlank()) {
             req.setAttribute("phoneError", "Vui lòng nhập số điện thoại!");
             hasError = true;
         }
 
-        if (password == null) {
+        if (password.isBlank()) {
             req.setAttribute("passwordError", "Vui lòng nhập mật khẩu!");
             hasError = true;
         }
@@ -50,13 +50,13 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
-        if (!ValidationUtil.isValidVietnamPhone(phone)) {
+        if (ValidationUtil.isValidVietnamPhone(phone)) {
             req.setAttribute("error","Số điện thoại không hợp lệ! Ví dụ: 0901234567");
             req.getRequestDispatcher("/WEB-INF/views/auth/login.jsp").forward(req,resp);
             return;
         }
 
-        if (!ValidationUtil.isValidPassword(password)) {
+        if (ValidationUtil.isValidPassword(password)) {
             req.setAttribute("error","Mật khẩu không hợp lệ và không được để trống");
             req.getRequestDispatcher("/WEB-INF/views/auth/login.jsp").forward(req,resp);
             return;

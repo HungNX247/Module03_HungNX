@@ -27,46 +27,29 @@ public class RegisterServlet extends HttpServlet {
         String password = req.getParameter("password");
         String confirmPassword = req.getParameter("confirmPassword");
 
-        if (fullName != null) {
-            fullName = fullName.trim();
-            if (fullName.isEmpty()) fullName = null;
-        }
-        req.setAttribute("fullName",fullName);
-
-        if (phone != null) {
-            phone = phone.trim();
-            if (phone.isEmpty()) phone = null;
-        }
-        req.setAttribute("phone",phone);
-
-        if (password != null) {
-            password = password.trim();
-            if (password.isEmpty()) password = null;
-        }
-
-        if (confirmPassword != null) {
-            confirmPassword = confirmPassword.trim();
-            if (confirmPassword.isEmpty()) confirmPassword = null;
-        }
+        fullName = (fullName == null) ? "" : fullName.trim();
+        phone = (phone == null) ? "" : phone.trim();
+        password = (password == null) ? "" : password.trim();
+        confirmPassword = (confirmPassword == null) ? "" : confirmPassword.trim();
 
         req.setAttribute("fullName", fullName);
         req.setAttribute("phone", phone);
 
         boolean hasError = false;
 
-        if (fullName == null) {
+        if (fullName.isBlank()) {
             req.setAttribute("fullNameError", "Vui lòng nhập họ tên!");
             hasError = true;
         }
-        if (phone == null) {
+        if (phone.isBlank()) {
             req.setAttribute("phoneError", "Vui lòng nhập số điện thoại!");
             hasError = true;
         }
-        if (password == null) {
+        if (password.isBlank()) {
             req.setAttribute("passwordError", "Vui lòng nhập mật khẩu!");
             hasError = true;
         }
-        if (confirmPassword == null) {
+        if (confirmPassword.isBlank()) {
             req.setAttribute("confirmPasswordError", "Vui lòng nhập lại mật khẩu!");
             hasError = true;
         }
@@ -88,13 +71,13 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
 
-        if (!ValidationUtil.isValidVietnamPhone(phone)) {
+        if (ValidationUtil.isValidVietnamPhone(phone)) {
             req.setAttribute("error","Số điện thoại không hợp lệ! Ví dụ: 0901234567");
             req.getRequestDispatcher("/WEB-INF/views/auth/register.jsp").forward(req,resp);
             return;
         }
 
-        if (!ValidationUtil.isValidPassword(password)) {
+        if (ValidationUtil.isValidPassword(password)) {
             req.setAttribute("error","Mật khẩu tối thiểu 6 ký tự!");
             req.getRequestDispatcher("/WEB-INF/views/auth/register.jsp").forward(req,resp);
             return;
