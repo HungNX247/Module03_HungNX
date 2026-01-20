@@ -2,7 +2,6 @@ package com.clinicbooking.controller.appointment;
 
 import com.clinicbooking.dto.UserDto;
 import com.clinicbooking.model.entity.Appointment;
-import com.clinicbooking.model.entity.User;
 import com.clinicbooking.service.AppointmentService;
 import com.clinicbooking.service.DoctorService;
 import jakarta.servlet.ServletException;
@@ -15,9 +14,12 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @WebServlet("/appointments/create")
 public class AppointmentCreateServlet extends HttpServlet {
+    private static final Logger LOGGER = Logger.getLogger(AppointmentCreateServlet.class.getName());
     private final DoctorService doctorService = new DoctorService();
     private final AppointmentService appointmentService = new AppointmentService();
 
@@ -83,8 +85,9 @@ public class AppointmentCreateServlet extends HttpServlet {
             }
             resp.sendRedirect(req.getContextPath() + "/appointments");
 
-        } catch (ServletException e) {
-            e.printStackTrace();
+        } catch (Exception  e) {
+            LOGGER.log(Level.SEVERE, "Lỗi hệ thống khi tạo lịch hẹn", e);
+            
             req.setAttribute("error", "Dữ liệu không hợp lệ! Vui lòng kiểm tra lại.");
             req.setAttribute("doctors", doctorService.findAll());
             req.getRequestDispatcher("/WEB-INF/views/appointment/create.jsp").forward(req, resp);
