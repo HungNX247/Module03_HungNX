@@ -66,11 +66,32 @@ public class AdminAppointmentCreateServlet extends HttpServlet {
             String timeStr = req.getParameter("time");
             String note = req.getParameter("note");
 
-            if (patientIdStr == null || patientIdStr.isEmpty()
-                    || doctorIdStr == null || doctorIdStr.isEmpty()
-                    || dateStr == null || dateStr.isEmpty()
-                    || timeStr == null || timeStr.isEmpty()) {
-                req.setAttribute("error", "Vui lòng nhập đầy đủ thông tin lịch hẹn!");
+            req.setAttribute("oldPatientId", patientIdStr);
+            req.setAttribute("oldDoctorId", doctorIdStr);
+            req.setAttribute("oldDate", dateStr);
+            req.setAttribute("oldTime", timeStr);
+            req.setAttribute("oldNote", note);
+
+            boolean hasError = false;
+
+            if (patientIdStr == null || patientIdStr.isEmpty()) {
+                req.setAttribute("patientError", "Vui lòng chọn bệnh nhân!");
+                hasError = true;
+            }
+            if (doctorIdStr == null || doctorIdStr.isEmpty()) {
+                req.setAttribute("doctorError", "Vui lòng chọn bác sĩ!");
+                hasError = true;
+            }
+            if (dateStr == null || dateStr.isEmpty()) {
+                req.setAttribute("dateError", "Vui lòng chọn ngày khám!");
+                hasError = true;
+            }
+            if (timeStr == null || timeStr.isEmpty()) {
+                req.setAttribute("timeError", "Vui lòng chọn giờ khám!");
+                hasError = true;
+            }
+
+            if (hasError) {
                 req.setAttribute("doctors", doctorService.findAll());
                 req.setAttribute("patients", userService.findAllPatients());
                 req.getRequestDispatcher("/WEB-INF/views/admin/appointments-create.jsp").forward(req,resp);

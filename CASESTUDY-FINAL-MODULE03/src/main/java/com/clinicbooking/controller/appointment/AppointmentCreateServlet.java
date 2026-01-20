@@ -41,12 +41,29 @@ public class AppointmentCreateServlet extends HttpServlet {
         String timeStr = req.getParameter("time");
         String note = req.getParameter("note");
 
-        if (dateStr == null || timeStr == null  || dateStr.isEmpty() || timeStr.isEmpty()) {
-            req.setAttribute("error", "Vui lòng nhập đầy đủ thông tin lịch hẹn!");
+        req.setAttribute("oldDate", dateStr);
+        req.setAttribute("oldTime", timeStr);
+        req.setAttribute("oldNote", note);
+        req.setAttribute("oldDoctorId", doctorId);
+
+        boolean hasError = false;
+
+        if (dateStr == null || dateStr.trim().isEmpty()) {
+            req.setAttribute("dateError", "Vui lòng chọn ngày khám!");
+            hasError = true;
+        }
+
+        if (timeStr == null || timeStr.trim().isEmpty()) {
+            req.setAttribute("timeError", "Vui lòng chọn giờ khám!");
+            hasError = true;
+        }
+
+        if (hasError) {
             req.setAttribute("doctors", doctorService.findAll());
             req.getRequestDispatcher("/WEB-INF/views/appointment/create.jsp").forward(req, resp);
             return;
         }
+
         try {
 
             Appointment appointment = new Appointment();

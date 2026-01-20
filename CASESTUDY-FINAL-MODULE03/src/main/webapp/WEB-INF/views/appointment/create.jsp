@@ -51,13 +51,19 @@
                             <!-- Date -->
                             <div class="form-group mb-3">
                                 <label class="font-weight-bold">Ngày khám</label>
-                                <input class="form-control" type="date" name="date" required />
+                                <input class="form-control" type="date" name="date" value="${oldDate}"  />
+                                <c:if test="${not empty dateError}">
+                                    <small class="text-danger">${dateError}</small>
+                                </c:if>
                             </div>
 
                             <!-- Time -->
                             <div class="form-group mb-3">
                                 <label class="font-weight-bold">Giờ khám</label>
-                                <input class="form-control" type="time" name="time" required />
+                                <input class="form-control" type="time" name="time" value="${oldTime}" />
+                                <c:if test="${not empty timeError}">
+                                    <small class="text-danger">${timeError}</small>
+                                </c:if>
                             </div>
 
                             <!-- Note -->

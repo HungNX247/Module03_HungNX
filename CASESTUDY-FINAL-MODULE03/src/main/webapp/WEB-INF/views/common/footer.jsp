@@ -4,7 +4,7 @@
     <div class="container-fluid px-4">
         <div class="d-flex align-items-center justify-content-between small">
             <div class="text-muted">© 2026 Clinic Booking</div>
-            <div class="text-muted">Powered by JSP/Servlet (Tomcat 10)</div>
+            <div class="text-muted">Powered by Nguyễn Xuân Hùng</div>
         </div>
     </div>
 </footer>

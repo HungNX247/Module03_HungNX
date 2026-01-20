@@ -22,6 +22,7 @@
 
             <div class="card-body">
 
+                <!-- error chung (slot trùng, lỗi hệ thống...) -->
                 <c:if test="${not empty error}">
                     <div class="alert alert-danger">
                         <i class="fas fa-exclamation-triangle"></i>
@@ -33,43 +34,63 @@
 
                     <div class="mb-3">
                         <label class="form-label">Bệnh nhân</label>
-                        <select name="patientId" class="form-control" required>
+                        <select name="patientId" class="form-control">
                             <option value="">-- Chọn bệnh nhân --</option>
                             <c:forEach var="p" items="${patients}">
-                                <option value="${p.id}">
+                                <option value="${p.id}" ${oldPatientId == p.id ? "selected" : ""}>
                                         ${p.fullName} - ${p.phone}
                                 </option>
                             </c:forEach>
                         </select>
+
+                        <!--  cảnh báo bệnh nhân -->
+                        <c:if test="${not empty patientError}">
+                            <small class="text-danger">${patientError}</small>
+                        </c:if>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Bác sĩ</label>
-                        <select name="doctorId" class="form-control" required>
+                        <select name="doctorId" class="form-control">
                             <option value="">-- Chọn bác sĩ --</option>
                             <c:forEach var="d" items="${doctors}">
-                                <option value="${d.id}">
+                                <option value="${d.id}" ${oldDoctorId == d.id ? "selected" : ""}>
                                         ${d.fullName} (${d.specialtyName})
                                 </option>
                             </c:forEach>
                         </select>
+
+                        <!-- cảnh báo bác sĩ -->
+                        <c:if test="${not empty doctorError}">
+                            <small class="text-danger">${doctorError}</small>
+                        </c:if>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Ngày khám</label>
-                            <input type="date" name="date" class="form-control" required />
+                            <input type="date" name="date" class="form-control" value="${oldDate}" />
+
+                            <!--  cảnh báo ngày -->
+                            <c:if test="${not empty dateError}">
+                                <small class="text-danger">${dateError}</small>
+                            </c:if>
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Giờ khám</label>
-                            <input type="time" name="time" class="form-control" required />
+                            <input type="time" name="time" class="form-control" value="${oldTime}" />
+
+                            <!--  cảnh báo giờ -->
+                            <c:if test="${not empty timeError}">
+                                <small class="text-danger">${timeError}</small>
+                            </c:if>
                         </div>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Ghi chú</label>
-                        <textarea name="note" class="form-control" rows="3" placeholder="(Không bắt buộc)"></textarea>
+                        <textarea name="note" class="form-control" rows="3" placeholder="(Không bắt buộc)">${oldNote}</textarea>
                     </div>
 
                     <button type="submit" class="btn btn-primary">
