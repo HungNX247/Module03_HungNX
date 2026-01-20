@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -8,10 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>Đăng nhập - Clinic Booking</title>
 
-
     <link href="${pageContext.request.contextPath}/assets/css/styles.css" rel="stylesheet" />
-
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"
             crossorigin="anonymous"></script>
 
@@ -24,6 +22,12 @@
             border-radius: 6px;
             margin-bottom: 14px;
             font-size: 14px;
+        }
+
+        .field-error {
+            color: #cc0000;
+            font-size: 13px;
+            margin-top: 6px;
         }
     </style>
 </head>
@@ -43,34 +47,26 @@
 
                             <div class="card-body">
 
-                                <%
-                                    String error = (String) request.getAttribute("error");
-                                    if (error != null && !error.isEmpty()) {
-                                %>
-                                <div class="error-box">
-                                    <i class="fas fa-exclamation-triangle"></i>
-                                    <%= error %>
-                                </div>
-                                <%
-                                    }
-                                %>
+                                <!-- error chung -->
+                                <c:if test="${not empty error}">
+                                    <div class="error-box">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                            ${error}
+                                    </div>
+                                </c:if>
 
-                                <%
-                                    String success = (String) session.getAttribute("success");
-                                    if (success != null && !success.isEmpty()) {
-                                %>
-                                <div class="alert alert-success" role="alert" style="margin-bottom: 14px;">
-                                    <i class="fas fa-check-circle"></i>
-                                    <%= success %>
-                                </div>
-                                <%
-                                        session.removeAttribute("success");
-                                    }
-                                %>
+                                <!-- success từ session -->
+                                <c:if test="${not empty sessionScope.success}">
+                                    <div class="alert alert-success" role="alert" style="margin-bottom: 14px;">
+                                        <i class="fas fa-check-circle"></i>
+                                            ${sessionScope.success}
+                                    </div>
+                                    <c:remove var="success" scope="session"/>
+                                </c:if>
 
-
-
-                                <form method="post" action="${pageContext.request.contextPath}/login">
+                                <form method="post"
+                                      action="${pageContext.request.contextPath}/login"
+                                      novalidate>
 
                                     <div class="form-group">
                                         <label class="small mb-1" for="phone">Số điện thoại</label>
@@ -79,7 +75,11 @@
                                                name="phone"
                                                type="text"
                                                placeholder="Ví dụ: 0901234567"
-                                               required />
+                                               value="${phone}" />
+
+                                        <c:if test="${not empty phoneError}">
+                                            <div class="field-error">${phoneError}</div>
+                                        </c:if>
                                     </div>
 
                                     <div class="form-group">
@@ -88,8 +88,11 @@
                                                id="password"
                                                name="password"
                                                type="password"
-                                               placeholder="Nhập mật khẩu"
-                                               required />
+                                               placeholder="Nhập mật khẩu" />
+
+                                        <c:if test="${not empty passwordError}">
+                                            <div class="field-error">${passwordError}</div>
+                                        </c:if>
                                     </div>
 
                                     <div class="form-group d-flex align-items-center justify-content-center mt-4 mb-0">

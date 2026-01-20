@@ -36,11 +36,25 @@ public class ChangePasswordServlet extends HttpServlet {
         String newPassword = req.getParameter("newPassword");
         String confirmPassword = req.getParameter("confirmPassword");
 
-        if (currentPassword == null || currentPassword.isBlank()
-            || newPassword == null || newPassword.isBlank()
-            || confirmPassword == null || confirmPassword.isBlank()) {
-            req.setAttribute("error", "Vui lòng nhập đầy đủ thông tin");
-            doGet(req,resp);
+        boolean hasError = false;
+
+        if (currentPassword == null || currentPassword.isBlank()) {
+            req.setAttribute("currentPasswordError", "Vui lòng nhập mật khẩu hiện tại!");
+            hasError = true;
+        }
+
+        if (newPassword == null || newPassword.isBlank()) {
+            req.setAttribute("newPasswordError", "Vui lòng nhập mật khẩu mới!");
+            hasError = true;
+        }
+
+        if (confirmPassword == null || confirmPassword.isBlank()) {
+            req.setAttribute("confirmPasswordError", "Vui lòng nhập lại mật khẩu mới!");
+            hasError = true;
+        }
+
+        if (hasError) {
+            doGet(req, resp);
             return;
         }
 

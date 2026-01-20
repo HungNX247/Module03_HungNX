@@ -28,6 +28,28 @@ public class LoginServlet extends HttpServlet {
         String phone = req.getParameter("phone");
         String password = req.getParameter("password");
 
+        phone = (phone == null) ? "" : phone.trim();
+        password = (password == null) ? "" : password.trim();
+
+        req.setAttribute("phone", phone);
+
+        boolean hasError = false;
+
+        if (phone == null) {
+            req.setAttribute("phoneError", "Vui lòng nhập số điện thoại!");
+            hasError = true;
+        }
+
+        if (password == null) {
+            req.setAttribute("passwordError", "Vui lòng nhập mật khẩu!");
+            hasError = true;
+        }
+
+        if (hasError) {
+            req.getRequestDispatcher("/WEB-INF/views/auth/login.jsp").forward(req, resp);
+            return;
+        }
+
         if (!ValidationUtil.isValidVietnamPhone(phone)) {
             req.setAttribute("error","Số điện thoại không hợp lệ! Ví dụ: 0901234567");
             req.getRequestDispatcher("/WEB-INF/views/auth/login.jsp").forward(req,resp);

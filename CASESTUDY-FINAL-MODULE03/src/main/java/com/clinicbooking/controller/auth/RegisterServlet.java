@@ -49,9 +49,29 @@ public class RegisterServlet extends HttpServlet {
             if (confirmPassword.isEmpty()) confirmPassword = null;
         }
 
+        req.setAttribute("fullName", fullName);
+        req.setAttribute("phone", phone);
 
-        if (fullName == null || phone == null || password == null) {
-            req.setAttribute("error", "Vui lòng nhập đầy đủ thông tin!");
+        boolean hasError = false;
+
+        if (fullName == null) {
+            req.setAttribute("fullNameError", "Vui lòng nhập họ tên!");
+            hasError = true;
+        }
+        if (phone == null) {
+            req.setAttribute("phoneError", "Vui lòng nhập số điện thoại!");
+            hasError = true;
+        }
+        if (password == null) {
+            req.setAttribute("passwordError", "Vui lòng nhập mật khẩu!");
+            hasError = true;
+        }
+        if (confirmPassword == null) {
+            req.setAttribute("confirmPasswordError", "Vui lòng nhập lại mật khẩu!");
+            hasError = true;
+        }
+
+        if (hasError) {
             req.getRequestDispatcher("/WEB-INF/views/auth/register.jsp").forward(req, resp);
             return;
         }
@@ -69,7 +89,7 @@ public class RegisterServlet extends HttpServlet {
         }
 
         if (!ValidationUtil.isValidVietnamPhone(phone)) {
-            req.setAttribute("error","SĐT không hợp lệ! Ví dụ: 0901234567");
+            req.setAttribute("error","Số điện thoại không hợp lệ! Ví dụ: 0901234567");
             req.getRequestDispatcher("/WEB-INF/views/auth/register.jsp").forward(req,resp);
             return;
         }

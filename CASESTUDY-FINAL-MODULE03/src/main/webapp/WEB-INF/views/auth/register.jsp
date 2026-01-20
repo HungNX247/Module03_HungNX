@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -8,10 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>Đăng ký - Clinic Booking</title>
 
-    <!-- SB Admin styles -->
     <link href="${pageContext.request.contextPath}/assets/css/styles.css" rel="stylesheet" />
-
-    <!-- FontAwesome -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"
             crossorigin="anonymous"></script>
 
@@ -26,6 +24,11 @@
             font-size: 14px;
         }
 
+        .field-error {
+            color: #cc0000;
+            font-size: 13px;
+            margin-top: 6px;
+        }
 
         .form-group label {
             min-height: 18px;
@@ -48,20 +51,14 @@
 
                             <div class="card-body">
 
-                                <%
-                                    String error = (String) request.getAttribute("error");
-                                    if (error != null && !error.isEmpty()) {
-                                %>
-                                <div class="error-box">
-                                    <i class="fas fa-exclamation-triangle"></i>
-                                    <%= error %>
-                                </div>
-                                <%
-                                    }
-                                %>
+                                <c:if test="${not empty error}">
+                                    <div class="error-box">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                            ${error}
+                                    </div>
+                                </c:if>
 
-                                <form method="post" action="${pageContext.request.contextPath}/register">
-
+                                <form method="post" action="${pageContext.request.contextPath}/register" novalidate>
 
                                     <div class="form-row">
                                         <div class="col-md-6">
@@ -72,7 +69,12 @@
                                                        name="fullName"
                                                        type="text"
                                                        placeholder="Nhập họ và tên"
+                                                       value="${fullName}"
                                                        required />
+
+                                                <c:if test="${not empty fullNameError}">
+                                                    <div class="field-error">${fullNameError}</div>
+                                                </c:if>
                                             </div>
                                         </div>
 
@@ -84,7 +86,12 @@
                                                        name="phone"
                                                        type="text"
                                                        placeholder="Ví dụ: 0901234567"
+                                                       value="${phone}"
                                                        required />
+
+                                                <c:if test="${not empty phoneError}">
+                                                    <div class="field-error">${phoneError}</div>
+                                                </c:if>
                                             </div>
                                         </div>
                                     </div>
@@ -99,6 +106,10 @@
                                                        type="password"
                                                        placeholder="Nhập mật khẩu"
                                                        required />
+
+                                                <c:if test="${not empty passwordError}">
+                                                    <div class="field-error">${passwordError}</div>
+                                                </c:if>
                                             </div>
                                         </div>
 
@@ -111,6 +122,10 @@
                                                        type="password"
                                                        placeholder="Nhập lại mật khẩu"
                                                        required />
+
+                                                <c:if test="${not empty confirmPasswordError}">
+                                                    <div class="field-error">${confirmPasswordError}</div>
+                                                </c:if>
                                             </div>
                                         </div>
                                     </div>
