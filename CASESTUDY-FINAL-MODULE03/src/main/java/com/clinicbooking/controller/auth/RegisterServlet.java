@@ -71,13 +71,13 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
 
-        if (ValidationUtil.isValidVietnamPhone(phone)) {
+        if (!ValidationUtil.isValidVietnamPhone(phone)) {
             req.setAttribute("error","Số điện thoại không hợp lệ! Ví dụ: 0901234567");
             req.getRequestDispatcher("/WEB-INF/views/auth/register.jsp").forward(req,resp);
             return;
         }
 
-        if (ValidationUtil.isValidPassword(password)) {
+        if (!ValidationUtil.isValidPassword(password)) {
             req.setAttribute("error","Mật khẩu tối thiểu 6 ký tự!");
             req.getRequestDispatcher("/WEB-INF/views/auth/register.jsp").forward(req,resp);
             return;

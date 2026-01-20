@@ -68,7 +68,7 @@ public class ChangePasswordServlet extends HttpServlet {
             return;
         }
 
-        if (ValidationUtil.isValidPassword(newPassword)) {
+        if (!ValidationUtil.isValidPassword(newPassword)) {
             req.setAttribute("error", "Mật khẩu mới phải từ 6 ký tự trở lên!");
             doGet(req,resp);
             return;

@@ -50,13 +50,13 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
-        if (ValidationUtil.isValidVietnamPhone(phone)) {
+        if (!ValidationUtil.isValidVietnamPhone(phone)) {
             req.setAttribute("error","Số điện thoại không hợp lệ! Ví dụ: 0901234567");
             req.getRequestDispatcher("/WEB-INF/views/auth/login.jsp").forward(req,resp);
             return;
         }
 
-        if (ValidationUtil.isValidPassword(password)) {
+        if (!ValidationUtil.isValidPassword(password)) {
             req.setAttribute("error","Mật khẩu không hợp lệ và không được để trống");
             req.getRequestDispatcher("/WEB-INF/views/auth/login.jsp").forward(req,resp);
             return;
@@ -74,6 +74,11 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = req.getSession(true);
         session.setAttribute("user",userDto);
 
-        resp.sendRedirect(req.getContextPath() + "/doctors");
+        if (userDto.getRole() != null && userDto.getRole().equalsIgnoreCase("ADMIN")) {
+            resp.sendRedirect(req.getContextPath() + "/admin/appointments");
+        } else {
+            resp.sendRedirect(req.getContextPath() + "/doctors");
+        }
+
     }
 }

@@ -28,7 +28,7 @@ public class AuthFilter implements Filter {
             return;
         }
 
-        if (path.equals(request.getContextPath() + "/") || path.endsWith("index.jsp")) {
+        if (path.endsWith("index.jsp")) {
             filterChain.doFilter(request,response);
             return;
         }
@@ -45,12 +45,6 @@ public class AuthFilter implements Filter {
         boolean isAdmin = user != null
                 && user.getRole() != null
                 && user.getRole().equalsIgnoreCase("ADMIN");
-
-        if (isAdmin && !path.startsWith(request.getContextPath() + "/admin")) {
-            response.sendRedirect(request.getContextPath() + "/admin/appointments");
-            return;
-        }
-
 
         if (path.startsWith(request.getContextPath() + "/admin") && !isAdmin) {
             response.sendRedirect(request.getContextPath() + "/doctors");
