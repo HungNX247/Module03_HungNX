@@ -20,7 +20,7 @@
                 Tạo lịch hẹn
             </div>
 
-            <div class="card-body">
+            <div class="card-body p-4">
 
                 <!-- error chung (slot trùng, lỗi hệ thống...) -->
                 <c:if test="${not empty error}">
@@ -66,27 +66,23 @@
                         </c:if>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
+
+                        <div class="form-group mb-3">
                             <label class="form-label">Ngày khám</label>
                             <input type="date" name="date" class="form-control" value="${oldDate}" />
-
-                            <!--  cảnh báo ngày -->
                             <c:if test="${not empty dateError}">
                                 <small class="text-danger">${dateError}</small>
                             </c:if>
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="form-group mb-3">
                             <label class="form-label">Giờ khám</label>
                             <input type="time" name="time" class="form-control" value="${oldTime}" />
-
-                            <!--  cảnh báo giờ -->
                             <c:if test="${not empty timeError}">
                                 <small class="text-danger">${timeError}</small>
                             </c:if>
                         </div>
-                    </div>
+
 
                     <div class="mb-3">
                         <label class="form-label">Ghi chú</label>

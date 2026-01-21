@@ -16,6 +16,10 @@ public class AuthFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+
         String path = request.getRequestURI();
 
         if (path.contains("/assets/") ||path.contains("/css/") || path.contains("/js/") || path.contains("/images/")) {
