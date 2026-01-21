@@ -22,6 +22,12 @@
 
             <div class="card-body">
 
+                <c:if test="${success == 'updated'}">
+                    <div class="alert alert-success" role="alert">
+                        Cập nhật lịch khám thành công!
+                    </div>
+                </c:if>
+
                 <c:if test="${empty appointments}">
                     <div class="alert alert-info" role="alert">
                         <i class="fas fa-info-circle"></i>
@@ -77,21 +83,31 @@
 
                                     <td>
                                         <c:if test="${ap.status == 'BOOKED'}">
-                                            <form method="post"
-                                                  action="${pageContext.request.contextPath}/appointments/cancel"
-                                                  style="margin: 0;">
-                                                <input type="hidden" name="id" value="${ap.id}">
-                                                <button type="submit" class="btn btn-sm btn-outline-danger"
-                                                        onclick="return confirm('Bạn chắc chắn muốn huỷ lịch hẹn này?');">
-                                                    <i class="fas fa-times"></i> Huỷ
-                                                </button>
-                                            </form>
+                                            <div class="d-flex gap-2">
+
+                                                <a class="btn btn-sm btn-outline-warning mr-2"
+                                                   href="${pageContext.request.contextPath}/appointments/edit?id=${ap.id}">
+                                                    <i class="fas fa-edit"></i> Sửa
+                                                </a>
+
+                                                <form method="post"
+                                                      action="${pageContext.request.contextPath}/appointments/cancel"
+                                                      style="margin: 0;">
+                                                    <input type="hidden" name="id" value="${ap.id}">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                            onclick="return confirm('Bạn chắc chắn muốn huỷ lịch hẹn này?');">
+                                                        <i class="fas fa-times"></i> Huỷ
+                                                    </button>
+                                                </form>
+
+                                            </div>
                                         </c:if>
 
                                         <c:if test="${ap.status != 'BOOKED'}">
                                             <span class="text-muted">—</span>
                                         </c:if>
                                     </td>
+
                                 </tr>
                             </c:forEach>
                             </tbody>

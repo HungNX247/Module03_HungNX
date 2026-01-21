@@ -4,11 +4,9 @@ import com.clinicbooking.config.DBConnection;
 import com.clinicbooking.dto.AppointmentDto;
 import com.clinicbooking.model.entity.Appointment;
 
-import java.sql.Statement;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -164,4 +162,100 @@ public class AppointmentDao {
         }
 
     }
+
+    public Appointment findByIdAndPatientId(int id, int patientId) {
+        String sql = "SELECT * FROM appointments WHERE id = ? AND patient_id = ?";
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            ps.setInt(2, patientId);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Appointment a = new Appointment();
+                a.setId(rs.getInt("id"));
+                a.setPatientId(rs.getInt("patient_id"));
+                a.setDoctorId(rs.getInt("doctor_id"));
+                a.setAppointmentDate(Date.valueOf(rs.getDate("appointment_date").toLocalDate()));
+                a.setAppointmentTime(Time.valueOf(rs.getTime("appointment_time").toLocalTime()));
+                a.setStatus(rs.getString("status"));
+                a.setNote(rs.getString("note"));
+                return a;
+            }
+            return null;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public boolean existsDoctorBookedSlot(int doctorId, LocalDate date, LocalTime time, int excludeId) {
+        String sql = """
+        SELECT COUNT(*)
+        FROM appointments
+        WHERE doctor_id = ?
+          AND appointment_date = ?
+          AND appointment_time = ?
+          AND status = 'BOOKED'
+          AND id <> ?
+    """;
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, doctorId);
+            ps.setDate(2, java.sql.Date.valueOf(date));
+            ps.setTime(3, java.sql.Time.valueOf(time));
+            ps.setInt(4, excludeId);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+            return false;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return true;
+        }
+    }
+
+    public boolean updateByPatient(int id, int patientId, int doctorId,
+                                   LocalDate date, LocalTime time, String note) {
+
+        String sql = """
+        UPDATE appointments
+        SET doctor_id = ?,
+            appointment_date = ?,
+            appointment_time = ?,
+            note = ?
+        WHERE id = ?
+          AND patient_id = ?
+          AND status = 'BOOKED'
+    """;
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, doctorId);
+            ps.setDate(2, java.sql.Date.valueOf(date));
+            ps.setTime(3, java.sql.Time.valueOf(time));
+            ps.setString(4, note);
+
+            ps.setInt(5, id);
+            ps.setInt(6, patientId);
+
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
 }

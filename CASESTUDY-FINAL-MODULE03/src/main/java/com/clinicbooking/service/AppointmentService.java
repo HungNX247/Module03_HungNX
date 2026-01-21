@@ -4,6 +4,8 @@ import com.clinicbooking.dao.AppointmentDao;
 import com.clinicbooking.dto.AppointmentDto;
 import com.clinicbooking.model.entity.Appointment;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 public class AppointmentService {
@@ -24,4 +26,18 @@ public class AppointmentService {
     public boolean cancel(int appointmentId, int patientId) {
         return appointmentDao.cancel(appointmentId,patientId);
     }
+
+    public Appointment findByIdAndPatientId(int id, int patientId) {
+        return appointmentDao.findByIdAndPatientId(id, patientId);
+    }
+
+    public boolean isDoctorBusy(int doctorId, LocalDate date, LocalTime time, int excludeId) {
+        return appointmentDao.existsDoctorBookedSlot(doctorId, date, time, excludeId);
+    }
+
+    public boolean updateByPatient(int id, int patientId, int doctorId,
+                                   LocalDate date, LocalTime time, String note) {
+        return appointmentDao.updateByPatient(id, patientId, doctorId, date, time, note);
+    }
+
 }

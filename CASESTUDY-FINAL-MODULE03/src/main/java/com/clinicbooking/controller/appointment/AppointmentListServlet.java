@@ -19,9 +19,19 @@ public class AppointmentListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(false);
+        if (session == null) {
+            resp.sendRedirect(req.getContextPath() + "/login");
+            return;
+        }
+
         UserDto user = (UserDto) session.getAttribute("user");
+        if (user == null) {
+            resp.sendRedirect(req.getContextPath() + "/login");
+            return;
+        }
 
         req.setAttribute("appointments",appointmentService.findByPatient(user.getId()));
+        req.setAttribute("success", req.getParameter("success"));
         req.getRequestDispatcher("/WEB-INF/views/appointment/list.jsp").forward(req,resp);
     }
 }
