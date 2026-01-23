@@ -46,7 +46,7 @@
         <select id="status" name="status" required>
             <option value="Trống">Trống</option>
             <option value="Hạ tầng">Hạ tầng</option>
-            <option value="Fully Furnished">Đầy đủ</option>
+            <option value="Đầy đủ">Đầy đủ</option>
         </select>
 
         <label>Tầng (*)</label>
